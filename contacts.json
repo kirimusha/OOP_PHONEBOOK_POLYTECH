@@ -1,0 +1,52 @@
+[
+    {
+        "address": "spb",
+        "birthDate": "21.12.2006",
+        "email": "mail@ma.ma",
+        "firstName": "Dasha",
+        "lastName": "G",
+        "patronymic": "",
+        "phones": [
+            {
+                "number": "88888888888",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "02.03.2006",
+        "email": "mail@mail.ru",
+        "firstName": "Maria",
+        "lastName": "Kirichek",
+        "patronymic": "Romanovna",
+        "phones": [
+            {
+                "number": "89887448548",
+                "type": 0
+            }
+        ]
+    },
+    {
+        "address": "m",
+        "birthDate": "02.02.2002",
+        "email": "m@mmm.mmm",
+        "firstName": "m",
+        "lastName": "m",
+        "patronymic": "m",
+        "phones": [
+            {
+                "number": "88888888888",
+                "type": 0
+            },
+            {
+                "number": "89898989898",
+                "type": 1
+            },
+            {
+                "number": "89998889998",
+                "type": 2
+            }
+        ]
+    }
+]

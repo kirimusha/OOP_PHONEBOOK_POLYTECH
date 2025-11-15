@@ -1,0 +1,31 @@
+PHONEBOOK
+
+OOP_PHONEBOOK/
+├── main.cpp
+├── contacts.json
+│
+├── include/           # Все заголовочные файлы
+│   ├── Contact.h
+│   ├── PhoneNumber.h
+│   ├── Validators.h
+│   ├── ContactManager.h
+│   ├── FileRepository.h
+│   ├── UI.h
+│   └── IContactRepository.h
+│
+├── src/               # Все реализации (.cpp)
+│   ├── Contact.cpp
+│   ├── PhoneNumber.cpp
+│   ├── Validators.cpp
+│   ├── ContactManager.cpp
+│   ├── FileRepository.cpp
+│   ├── UI.cpp
+│   └── main.cpp
+│
+└── third_party/
+    └── json.hpp
+
+g++ -Iinclude source/*.cpp -o phonebook.exe
+./phonebook.exe
+
+mmmm@mmmm.mmmm
