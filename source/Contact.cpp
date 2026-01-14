@@ -1,4 +1,4 @@
-#include "Contact.h"
+#include "../include/Contact.h"
 
 using namespace std;
 using json = nlohmann::json;

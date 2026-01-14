@@ -1,12 +1,11 @@
 #ifndef CONTACT_H // Защита от повторного подключения.
 #define CONTACT_H // Зачем? Если файл подключить дважды, компилятор выдаст ошибку "класс объявлен дважды"
 
-#include "PhoneNumber.h"
-#include "Validators.h"
+#include "../include/PhoneNumber.h"
+#include "../include/Validators.h"
 #include <list>
 #include <string>
 #include <iostream>
-#include <../third_party/json.hpp>
 #include "../third_party/json.hpp"
 
 using json = nlohmann::json;

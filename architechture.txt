@@ -1,37 +1,37 @@
 PHONEBOOK
 
-OOP_PHONEBOOK/
-├── contacts.json                     # Файл базы данных контактов (JSON формат)
+oopPhoneBookQt/
 │
-├── include/                          # Все заголовочные файлы (.h)
-│   ├── Contact.h                     # Класс Contact - описание структуры контакта
-│   ├── PhoneNumber.h                 # Класс PhoneNumber - телефонный номер с типом
-│   ├── Validators.h                  # Класс Validators - валидация входных данных
-│   ├── ContactManager.h              # Класс ContactManager - бизнес-логика приложения
-│   ├── FileRepository.h              # Класс FileRepository - работа с файлом JSON
-│   ├── UI.h                          # Функции пользовательского интерфейса
-│   └── IContactRepository.h          # Интерфейс IContactRepository - абстракция хранилища
+├── include/           # Все заголовочные файлы
+│   ├── Contact.h
+│   ├── PhoneNumber.h
+│   ├── Validators.h
+│   ├── ContactManager.h
+│   ├── FileRepository.h
+│   ├── UI.h
+│   └── IContactRepository.h
 │
-├── src/                              # Все файлы реализации (.cpp)
-│   ├── Contact.cpp                   # Реализация класса Contact
-│   ├── PhoneNumber.cpp               # Реализация класса PhoneNumber
-│   ├── Validators.cpp                # Реализация валидаторов
-│   ├── ContactManager.cpp            # Реализация менеджера контактов
-│   ├── FileRepository.cpp            # Реализация файлового хранилища
-│   ├── UI.cpp                        # Реализация пользовательского интерфейса
-│   └── main.cpp                      # Точка входа в программу, главное меню
+├── src/               # Все реализации (.cpp)
+│   ├── Contact.cpp
+│   ├── PhoneNumber.cpp
+│   ├── Validators.cpp
+│   ├── ContactManager.cpp
+│   ├── FileRepository.cpp
+│   ├── UI.cpp
+│   └── main.cpp
 │
-└── third_party/                      # Сторонние библиотеки
-    └── json.hpp                      # Библика nlohmann/json для работы с JSON
-
-Архитектурные связи:
-
-UI.h → ContactManager.h → IContactRepository.h → FileRepository.h
-     ↓                    ↓
-Contact.h → PhoneNumber.h → Validators.h
-
-
-
-
-g++ -Iinclude source/*.cpp -o phonebook.exe
-./phonebook.exe
+├── qt/                # Qt-специфичные файлы
+│   ├── main_qt.cpp        # Точка входа Qt-приложения
+│   ├── ContactDialog.h
+│   ├── ContactDialog.cpp
+│   ├── ContactDetailsDialog.h
+│   ├── ContactDetailsDialog.cpp
+│   ├── QtPhoneBook.h
+│   └── QtPhoneBook.cpp
+│
+├── architecture.txt
+├── CMakeLists.txt
+├── contacts.json
+│
+└── third_party/
+    └── json.hpp
