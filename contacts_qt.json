@@ -1,0 +1,136 @@
+[
+    {
+        "address": "spb",
+        "birthDate": "01.01.2006",
+        "email": "elizaveta123@mail.ru",
+        "firstName": "Elizaveta",
+        "lastName": "Lazarenko",
+        "patronymic": "Vladislavovna",
+        "phones": [
+            {
+                "number": "89999999999",
+                "type": 2
+            },
+            {
+                "number": "87777777777",
+                "type": 1
+            },
+            {
+                "number": "+7(999)6667755",
+                "type": 0
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "01.01.2005",
+        "email": "yanina@mail.ru",
+        "firstName": "Yanina",
+        "lastName": "Savina",
+        "patronymic": "Alexandrovna",
+        "phones": [
+            {
+                "number": "89999999999",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "02.03.2006",
+        "email": "maria@mail.ru",
+        "firstName": "Maria",
+        "lastName": "Kirichek",
+        "patronymic": "Romanovna",
+        "phones": [
+            {
+                "number": "89998887766",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "21.12.2006",
+        "email": "123alexandr@yandex.com",
+        "firstName": "Alexandr",
+        "lastName": "Gasov",
+        "patronymic": "Evgenevich",
+        "phones": [
+            {
+                "number": "+7(999)999-99-99",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "mikhailovsk",
+        "birthDate": "23.12.1992",
+        "email": "svetlanaatelie123@mail.com",
+        "firstName": "Svetlana",
+        "lastName": "Kirichek",
+        "patronymic": "Ivanovna",
+        "phones": [
+            {
+                "number": "+7999222-22-22",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "Mosсow",
+        "birthDate": "28.01.2007",
+        "email": "anastasia@mail.com",
+        "firstName": "Anastasia",
+        "lastName": "Elagina",
+        "patronymic": "Mikhailovna",
+        "phones": [
+            {
+                "number": "+7(999)9992299",
+                "type": 0
+            }
+        ]
+    },
+    {
+        "address": "mikhailovsk",
+        "birthDate": "01.02.1984",
+        "email": "romanbusinessman@yandex.com",
+        "firstName": "Roman",
+        "lastName": "Kirichek",
+        "patronymic": "Alexandrovich",
+        "phones": [
+            {
+                "number": "+7(999)444-88-28",
+                "type": 0
+            }
+        ]
+    },
+    {
+        "address": "",
+        "birthDate": "",
+        "email": "alina@m.mm",
+        "firstName": "Alina",
+        "lastName": "Milashka",
+        "patronymic": "",
+        "phones": [
+            {
+                "number": "+7(888)999-99-99",
+                "type": 1
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "01.01.1222",
+        "email": "solnishko123@rain.fog",
+        "firstName": "Solnishko",
+        "lastName": "Rain",
+        "patronymic": "Fogovna",
+        "phones": [
+            {
+                "number": "+7(888)999-44-33",
+                "type": 1
+            }
+        ]
+    }
+]
