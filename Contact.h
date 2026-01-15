@@ -25,6 +25,7 @@ private:
 
 public:
     // Конструкторы
+
     Contact() = default;
 
     // Основной конструктор
@@ -35,6 +36,14 @@ public:
             string birthDate,
             string email,
             list<PhoneNumber> phones);
+
+    // Конструкторы копирования и перемещения
+    Contact(const Contact& other) = default;
+    Contact(Contact&& other) noexcept;
+
+    // Операторы присваивания
+    Contact& operator=(const Contact& other);
+    Contact& operator=(Contact&& other) noexcept;
 
     // Геттеры (возвращаем по константной ссылке)
     const string& get_firstName() const;
@@ -79,6 +88,10 @@ public:
     // Операторы сравнения
     bool operator==(const Contact& other) const;
     bool operator!=(const Contact& other) const;
+
+    // оператор new
+    static void* operator new(size_t size);
+    static void operator delete(void* ptr) noexcept;
 };
 
 #endif // CONTACT_H

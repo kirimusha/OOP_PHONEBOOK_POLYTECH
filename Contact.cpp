@@ -22,6 +22,49 @@ Contact::Contact(string firstName,
     cout << "[Contact] Contact created: " << this->firstName << " " << this->lastName << "\n";
 }
 
+// Конструктор перемещения
+Contact::Contact(Contact&& other) noexcept
+    : firstName(move(other.firstName)),
+      lastName(move(other.lastName)),
+      patronymic(move(other.patronymic)),
+      address(move(other.address)),
+      birthDate(move(other.birthDate)),
+      email(move(other.email)),
+      phones(move(other.phones))
+{
+    cout << "[Contact] Contact moved: " << this->firstName << " " << this->lastName << "\n";
+}
+
+// Оператор копирующего присваивания
+Contact& Contact::operator=(const Contact& other) {
+    if (this != &other) {
+        firstName = other.firstName;
+        lastName = other.lastName;
+        patronymic = other.patronymic;
+        address = other.address;
+        birthDate = other.birthDate;
+        email = other.email;
+        phones = other.phones;
+    }
+    cout << "[Contact] Contact copy assigned\n";
+    return *this;
+}
+
+// Оператор перемещающего присваивания
+Contact& Contact::operator=(Contact&& other) noexcept {
+    if (this != &other) {
+        firstName = move(other.firstName);
+        lastName = move(other.lastName);
+        patronymic = move(other.patronymic);
+        address = move(other.address);
+        birthDate = move(other.birthDate);
+        email = move(other.email);
+        phones = move(other.phones);
+    }
+    cout << "[Contact] Contact move assigned\n";
+    return *this;
+}
+
 // Геттеры
 const string& Contact::get_firstName() const {
     return firstName;
@@ -376,4 +419,15 @@ bool Contact::operator==(const Contact& other) const {
 
 bool Contact::operator!=(const Contact& other) const {
     return !(*this == other);
+}
+
+void* Contact::operator new(size_t size) {
+    cout << "[Contact] Custom new called, allocating " << size << " bytes\n";
+    void* ptr = ::operator new(size);
+    return ptr;
+}
+
+void Contact::operator delete(void* ptr) noexcept {
+    cout << "[Contact] Custom delete called\n";
+    ::operator delete(ptr);
 }
