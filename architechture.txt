@@ -35,3 +35,21 @@ oopPhoneBookQt/
 │
 └── third_party/
     └── json.hpp
+
+
+# Проверьте, что PostgreSQL запущен
+sudo service postgresql status
+
+# Если не запущен, запустите
+sudo service postgresql start
+
+
+
+# Переключитесь на пользователя postgres
+sudo -u postgres psql
+
+# В командной строке PostgreSQL выполните:
+CREATE DATABASE phonebook;
+CREATE USER phonebook_user WITH PASSWORD 'password123';
+GRANT ALL PRIVILEGES ON DATABASE phonebook TO phonebook_user;
+\q

@@ -1,7 +1,7 @@
 #include "../include/UI.h"
 
 int main() {
-    FileRepository repo("../../oopPhoneBook/contacts.json");
+    FileRepository repo("contacts.json");
     ContactManager manager(&repo);
 
     while (true) {
