@@ -3,101 +3,129 @@
 using namespace std;
 using json = nlohmann::json;
 
-// конструкторы
-Contact::Contact(const string& firstName,
-                 const string& lastName,
-                 const string& patronymic,
-                 const string& address,
-                 const string& birthDate,
-                 const string& email,
-                 const list<PhoneNumber>& phones)
-    : firstName(firstName),
-      lastName(lastName),
-      patronymic(patronymic),
-      address(address),
-      birthDate(birthDate),
-      email(email),
-      phones(phones)
+// Основной конструктор (принимаем по значению и перемещаем)
+Contact::Contact(string firstName,
+                 string lastName,
+                 string patronymic,
+                 string address,
+                 string birthDate,
+                 string email,
+                 list<PhoneNumber> phones)
+    : firstName(move(firstName)),
+      lastName(move(lastName)),
+      patronymic(move(patronymic)),
+      address(move(address)),
+      birthDate(move(birthDate)),
+      email(move(email)),
+      phones(move(phones))
 {
-    cout << "[Contact] A contact has been created:" << firstName << lastName;
+    cout << "[Contact] Contact created: " << this->firstName << " " << this->lastName << "\n";
 }
 
-// Деструктор
-Contact::~Contact() = default;
+// Конструктор перемещения
+Contact::Contact(Contact&& other) noexcept
+    : firstName(move(other.firstName)),
+      lastName(move(other.lastName)),
+      patronymic(move(other.patronymic)),
+      address(move(other.address)),
+      birthDate(move(other.birthDate)),
+      email(move(other.email)),
+      phones(move(other.phones))
+{
+    cout << "[Contact] Contact moved: " << this->firstName << " " << this->lastName << "\n";
+}
 
-// Конструктор копирования
-Contact::Contact(const Contact& other)
-    : firstName(other.firstName),
-      lastName(other.lastName),
-      patronymic(other.patronymic),
-      address(other.address),
-      birthDate(other.birthDate),
-      email(other.email),
-      phones(other.phones) {}
+// Оператор копирующего присваивания
+Contact& Contact::operator=(const Contact& other) {
+    if (this != &other) {
+        firstName = other.firstName;
+        lastName = other.lastName;
+        patronymic = other.patronymic;
+        address = other.address;
+        birthDate = other.birthDate;
+        email = other.email;
+        phones = other.phones;
+    }
+    cout << "[Contact] Contact copy assigned\n";
+    return *this;
+}
 
-// геттеры
+// Оператор перемещающего присваивания
+Contact& Contact::operator=(Contact&& other) noexcept {
+    if (this != &other) {
+        firstName = move(other.firstName);
+        lastName = move(other.lastName);
+        patronymic = move(other.patronymic);
+        address = move(other.address);
+        birthDate = move(other.birthDate);
+        email = move(other.email);
+        phones = move(other.phones);
+    }
+    cout << "[Contact] Contact move assigned\n";
+    return *this;
+}
 
-string Contact::get_firstName() const {
+// Геттеры
+const string& Contact::get_firstName() const {
     return firstName;
 }
 
-string Contact::get_lastName() const {
+const string& Contact::get_lastName() const {
     return lastName;
 }
 
-string Contact::get_patronymic() const {
+const string& Contact::get_patronymic() const {
     return patronymic;
 }
 
-string Contact::get_address() const {
+const string& Contact::get_address() const {
     return address;
 }
 
-string Contact::get_birthDate() const {
+const string& Contact::get_birthDate() const {
     return birthDate;
 }
 
-string Contact::get_email() const {
+const string& Contact::get_email() const {
     return email;
 }
 
-list<PhoneNumber> Contact::get_phones() const {
+const list<PhoneNumber>& Contact::get_phones() const {
     return phones;
 }
 
-// сеттеры с валидацией
-
-bool Contact::set_firstName(const string& newFirstName) {
+// Сеттеры с перемещением
+bool Contact::set_firstName(string newFirstName) {
     string input = Validators::trim(newFirstName);
-    
+
     while (!validate_name(input)) {
         cerr << "[Contact] Invalid name: " << input << endl;
         cout << "Please enter a valid name: ";
         getline(cin, input);
         input = Validators::trim(input);
     }
-    
-    firstName = input;
+
+    firstName = move(input);
     return true;
 }
 
-bool Contact::set_lastName(const string& newLastName) {
+bool Contact::set_lastName(string newLastName) {
     string input = Validators::trim(newLastName);
-    
+
     while (!validate_name(input)) {
         cerr << "[Contact] Invalid last name: " << input << endl;
         cout << "Please enter a valid last name: ";
         getline(cin, input);
         input = Validators::trim(input);
     }
-    
-    lastName = input;
+
+    lastName = move(input);
     return true;
 }
 
-bool Contact::set_patronymic(const string& newPatronymic) {
+bool Contact::set_patronymic(string newPatronymic) {
     string input = Validators::trim(newPatronymic);
-    
+
     // Отчество может быть пустым
     while (!input.empty() && !validate_name(input)) {
         cerr << "[Contact] Invalid patronymic: " << input << endl;
@@ -105,30 +133,30 @@ bool Contact::set_patronymic(const string& newPatronymic) {
         getline(cin, input);
         input = Validators::trim(input);
     }
-    
-    patronymic = input;
+
+    patronymic = move(input);
     return true;
 }
 
-void Contact::set_address(const string& newAddress) {
-    address = Validators::trim(newAddress);
+void Contact::set_address(string newAddress) {
+    address = Validators::trim(move(newAddress));
 }
 
-bool Contact::set_birthDate(const string& newBirthDate) {
+bool Contact::set_birthDate(string newBirthDate) {
     string input = Validators::trim(newBirthDate);
-    
+
     while (!validate_birthDate(input)) {
         cerr << "[Contact] Invalid date of birth: " << input << endl;
         cout << "Please enter a valid date of birth: ";
         getline(cin, input);
         input = Validators::trim(input);
     }
-    
-    birthDate = input;
+
+    birthDate = move(input);
     return true;
 }
 
-bool Contact::set_email(const string& newEmail, const string& firstName) {
+bool Contact::set_email(string newEmail, const string& firstName) {
     string input = Validators::trim(newEmail);
     input = Validators::remove_spaces(input);
 
@@ -138,19 +166,19 @@ bool Contact::set_email(const string& newEmail, const string& firstName) {
 
         cout << "Please enter a valid email address: ";
         getline(cin, input);
-        
+
         // повторно обрабатываем ввод
         input = Validators::trim(input);
         input = Validators::remove_spaces(input);
     }
-    
-    email = input;
+
+    email = move(input);
     return true;
 }
 
-bool Contact::set_phones(const list<PhoneNumber>& newPhones) {
-    list<PhoneNumber> input = newPhones;
-    
+bool Contact::set_phones(list<PhoneNumber> newPhones) {
+    list<PhoneNumber> input = move(newPhones);
+
     while (true) {
         // Контакт должен иметь хотя бы один номер телефона
         if (input.empty()) {
@@ -170,10 +198,10 @@ bool Contact::set_phones(const list<PhoneNumber>& newPhones) {
         }
 
         if (allValid) {
-            phones = input;
+            phones = move(input);  // Перемещаем, а не копируем
             return true;
         }
-        
+
         cout << "Please enter valid phone numbers:\n";
         input = prompt_for_phones();
     }
@@ -182,13 +210,13 @@ bool Contact::set_phones(const list<PhoneNumber>& newPhones) {
 list<PhoneNumber> Contact::prompt_for_phones() {
     list<PhoneNumber> phoneList;
     string input;
-    
+
     cout << "Enter phone numbers (one per line, empty line to finish):\n";
     while (true) {
         cout << "Phone: ";
         getline(cin, input);
         input = Validators::trim(input);
-        
+
         if (input.empty()) {
             if (phoneList.empty()) {
                 cout << "At least one phone number is required. Continue entering...\n";
@@ -196,24 +224,24 @@ list<PhoneNumber> Contact::prompt_for_phones() {
             }
             break;
         }
-        
-        PhoneNumber phone(input);
+
+        PhoneNumber phone(input);  // Создаем временный объект
         if (phone.is_valid()) {
-            phoneList.push_back(phone);
+            phoneList.push_back(move(phone));  // Перемещаем в список
             cout << "Phone number added.\n";
         } else {
             cout << "Invalid phone number. Please enter a valid one.\n";
         }
     }
-    
+
     return phoneList;
 }
 
-// работа с телефонами
-
-void Contact::addPhone(const PhoneNumber& phone) {
+// Работа с телефонами
+void Contact::addPhone(PhoneNumber phone) {
     if (phone.is_valid()) {
-        phones.push_back(phone);
+        phones.push_back(move(phone));  // Перемещаем
+        cout << "[Contact] Phone number added\n";
     } else {
         cerr << "[Contact] An attempt to add an invalid phone number" << endl;
     }
@@ -222,13 +250,11 @@ void Contact::addPhone(const PhoneNumber& phone) {
 void Contact::removePhone(int index) {
     if (index >= 0 && index < static_cast<int>(phones.size())) {
         auto it = phones.begin();
-        for (int i = 0; i < index; ++i) {
-            ++it;
-        }
+        advance(it, index);
         phones.erase(it);
         cout << "[Contact] Phone number at index " << index << " removed successfully\n";
     } else {
-        cerr << "[Contact] Incorrect phone number index: " << index 
+        cerr << "[Contact] Incorrect phone number index: " << index
              << ". Total phones: " << phones.size() << "\n";
     }
 }
@@ -241,8 +267,7 @@ int Contact::phoneCount() const {
     return static_cast<int>(phones.size());
 }
 
-// валидация
-
+// Валидация
 bool Contact::is_valid() const {
     // Проверка обязательных полей
     if (firstName.empty() || lastName.empty() || email.empty()) {
@@ -291,7 +316,6 @@ bool Contact::is_valid() const {
     return true;
 }
 
-
 bool Contact::validate_name(const string& name) {
     return Validators::validate_name(name);
 }
@@ -304,10 +328,7 @@ bool Contact::validate_birthDate(const string& date) {
     return Validators::validate_birthDate(date);
 }
 
-// сериализация — это процесс превращения объекта класса в формат,
-// который можно сохранить или передать, например в файл, базу данных или через сеть
-
-// сериализация (JSON)
+// Сериализация в JSON
 json Contact::toJsonObj() const {
     json j;
     j["firstName"]  = firstName;
@@ -319,18 +340,17 @@ json Contact::toJsonObj() const {
 
     j["phones"] = nlohmann::json::array();
     for (const auto& phone : phones) {
-        j["phones"].push_back(phone.toJsonObj()); // нужно, чтобы PhoneNumber тоже возвращал json
+        j["phones"].push_back(phone.toJsonObj());
     }
 
     return j;
 }
 
 string Contact::toJson() const {
-    return toJsonObj().dump(); // возвращает корректную JSON-строку
+    return toJsonObj().dump();
 }
 
-
-// десериализация
+// Десериализация из JSON
 Contact Contact::fromJson(const string& jsonStr) {
     Contact contact;
 
@@ -340,9 +360,9 @@ Contact Contact::fromJson(const string& jsonStr) {
         // Если это массив — достаём первый элемент
         if (data.is_array() && !data.empty()) {
             if (data[0].is_string()) {
-                data = nlohmann::json::parse(data[0].get<string>()); // строка внутри массива
+                data = nlohmann::json::parse(data[0].get<string>());
             } else {
-                data = data[0]; // уже объект
+                data = data[0];
             }
         }
 
@@ -356,11 +376,13 @@ Contact Contact::fromJson(const string& jsonStr) {
 
         // телефоны
         if (data.contains("phones") && data["phones"].is_array()) {
+            list<PhoneNumber> phones;
             for (const auto& p : data["phones"]) {
                 string number = p.value("number", "");
                 int typeInt   = p.value("type", 0);
-                contact.phones.push_back(PhoneNumber(number, static_cast<PhoneType>(typeInt)));
+                phones.emplace_back(move(number), static_cast<PhoneType>(typeInt));
             }
+            contact.phones = move(phones);
         }
     }
     catch (const std::exception& e) {
@@ -370,25 +392,23 @@ Contact Contact::fromJson(const string& jsonStr) {
     return contact;
 }
 
-// вспомогательные методы
+// Вспомогательные методы
 string Contact::toString() const {
     string result = lastName + " " + firstName + " " + patronymic;
     if (!birthDate.empty()) {
         result += ", birthDate: " + birthDate;
     }
-    
+
     if (!email.empty()) {
         result += ", email: " + email;
     }
-    
+
     if (!phones.empty()) {
         result += ", phones: " + to_string(phones.size());
     }
-    
+
     return result;
 }
-// возвращает что-то типа "Иванов Иван Иванович, birthDate: 15.03.1990, email: ivan@example.com, phones: 89887448548, ..."
-
 
 bool Contact::operator==(const Contact& other) const {
     return firstName == other.firstName
@@ -397,7 +417,17 @@ bool Contact::operator==(const Contact& other) const {
         && email == other.email;
 }
 
-// просто логическое отрицание предыдущего ==
 bool Contact::operator!=(const Contact& other) const {
     return !(*this == other);
+}
+
+void* Contact::operator new(size_t size) {
+    cout << "[Contact] Custom new called, allocating " << size << " bytes\n";
+    void* ptr = ::operator new(size);
+    return ptr;
+}
+
+void Contact::operator delete(void* ptr) noexcept {
+    cout << "[Contact] Custom delete called\n";
+    ::operator delete(ptr);
 }
