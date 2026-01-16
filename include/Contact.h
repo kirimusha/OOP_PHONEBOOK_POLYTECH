@@ -1,5 +1,5 @@
-#ifndef CONTACT_H
-#define CONTACT_H
+#ifndef CONTACT_H // Защита от повторного подключения.
+#define CONTACT_H // Зачем? Если файл подключить дважды, компилятор выдаст ошибку "класс объявлен дважды"
 
 #include "../include/PhoneNumber.h"
 #include "../include/Validators.h"
@@ -19,79 +19,69 @@ private:
     string address;            // Адрес
     string birthDate;          // Дата рождения
     string email;              // Email
-    list<PhoneNumber> phones;  // Телефоны
+    list<PhoneNumber> phones;  // Телефоны (рабочий, домашний, служебный)
 
     static list<PhoneNumber> prompt_for_phones();
-
 public:
     // Конструкторы
-
+    // Дефолтный конструктор
     Contact() = default;
+    Contact(const string& firstName,
+            const string& lastName, 
+            const string& patronymic,
+            const string& address,
+            const string& birthDate,
+            const string& email,
+            const list<PhoneNumber>& phones);
+    // конструктор копирования
+    Contact(const Contact& other);
+    // деструктор
+    ~Contact();
+    
+    // Геттеры
+    string get_firstName() const;
+    string get_lastName() const;
+    string get_patronymic() const;
+    string get_address() const;
+    string get_birthDate() const;
+    string get_email() const;
+    list<PhoneNumber> get_phones() const;
 
-    // Основной конструктор
-    Contact(string firstName,
-            string lastName,
-            string patronymic,
-            string address,
-            string birthDate,
-            string email,
-            list<PhoneNumber> phones);
-
-    // Конструкторы копирования и перемещения
-    Contact(const Contact& other) = default;
-    Contact(Contact&& other) noexcept;
-
-    // Операторы присваивания
-    Contact& operator=(const Contact& other);
-    Contact& operator=(Contact&& other) noexcept;
-
-    // Геттеры (возвращаем по константной ссылке)
-    const string& get_firstName() const;
-    const string& get_lastName() const;
-    const string& get_patronymic() const;
-    const string& get_address() const;
-    const string& get_birthDate() const;
-    const string& get_email() const;
-    const list<PhoneNumber>& get_phones() const;  // Важно: по ссылке!
-
-    // Сеттеры (принимаем по значению и перемещаем)
-    bool set_firstName(string newFirstName);
-    bool set_lastName(string newLastName);
-    bool set_patronymic(string newPatronymic);
-    void set_address(string newAddress);
-    bool set_birthDate(string newBirthDate);
-    bool set_email(string newEmail, const string& firstName);
-    bool set_phones(list<PhoneNumber> newPhones);
-
+    
+    // Сеттеры
+    bool set_firstName(const string& newFirstName); // Почему bool? Чтобы понять, прошла ли валидация
+    bool set_lastName(const string& newLastName); 
+    bool set_patronymic(const string& newPatronymic);
+    void set_address(const string& newAddress);
+    bool set_birthDate(const string& newBirthDate);
+    bool set_email(const string& newEmail, const string& firstName);
+    bool set_phones(const list<PhoneNumber>& newPhones);
+    
     // Валидация
     bool is_valid() const;
 
     // Статические методы валидации
-    static bool validate_name(const string& name);
-    static bool validate_email(const string& email, const string& firstName);
+    static bool validate_name(const string& name);   // static можно вызывать без объекта
+    static bool validate_email(const string& email, const string& firstName); // проверить данные до создания контакта
     static bool validate_birthDate(const string& date);
 
     // Работа с телефонами
-    void addPhone(PhoneNumber phone);  // Принимаем по значению
+    void addPhone(const PhoneNumber& phone);
     void removePhone(int index);
     void clearPhones();
     int phoneCount() const;
 
-    // Для сохранения в файл
-    string toJson() const;
-    static Contact fromJson(const string& json);
+    // для сохранения в файл
+    string toJson() const;                        // Контакт в JSON
+    static Contact fromJson(const string& json);  // JSON в Контакт
     json toJsonObj() const;
 
-    // Для вывода
+    // чтобы удобно выводить содержимое объекта в виде строки
     string toString() const;
-
-    // Операторы сравнения
+    
+    // одинаковые ли контакты (для поиска и сортировки)
     bool operator==(const Contact& other) const;
     bool operator!=(const Contact& other) const;
-
-    // оператор new
-    static void* operator new(size_t size);
-    static void operator delete(void* ptr) noexcept;
 };
 
 #endif // CONTACT_H
