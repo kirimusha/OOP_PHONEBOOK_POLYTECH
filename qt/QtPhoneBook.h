@@ -13,6 +13,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QDate>
+#include <QActionGroup>
 
 #include "../include/ContactManager.h"
 #include "../include/Contact.h"
@@ -20,6 +21,7 @@
 #include "../qt/ContactDialog.h"
 #include "../qt/ContactDetailsDialog.h"
 #include "../include/FileRepository.h"
+#include "../database/PostgreSQLRepository.h"
 
 class QtPhoneBook : public QMainWindow
 {
@@ -44,6 +46,9 @@ private slots:
     void onSortIndicatorChanged(int logicalIndex, Qt::SortOrder order);
     void resetSorting();
     void showAboutDialog();
+    void switchToFileStorage();
+    void switchToDatabaseStorage();
+    void showStorageSettings();
 
 private:
     void setupUi();
@@ -52,13 +57,20 @@ private:
     void setupConnections();
     void loadContacts();
     void displayContacts(const std::vector<Contact>& contacts) const;
+    void switchStorage(IContactRepository* newRepository);
+    void updateStorageStatus();
 
 private:
     ContactManager* m_manager{};
-    FileRepository* m_repository{};
+    FileRepository* m_fileRepository{};
+    PostgreSQLRepository* m_dbRepository{};
+    IContactRepository* m_currentRepository{};
+    
+    bool m_useDatabaseStorage{false};
 
     QTableWidget* m_contactsTable{};
     QLineEdit* m_searchLineEdit{};
+    QAction* m_useFileAction{};
+    QAction* m_useDatabaseAction{};
 };
-
 #endif

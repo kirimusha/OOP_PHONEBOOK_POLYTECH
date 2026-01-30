@@ -1,5 +1,33 @@
 [
     {
+        "address": "",
+        "birthDate": "",
+        "email": "ss@ss.ss",
+        "firstName": "ss",
+        "lastName": "ss",
+        "patronymic": "",
+        "phones": [
+            {
+                "number": "88888888888",
+                "type": 2
+            }
+        ]
+    },
+    {
+        "address": "spb",
+        "birthDate": "03.07.2005",
+        "email": "Yanina@aaa.aa",
+        "firstName": "Yanina",
+        "lastName": "Savina",
+        "patronymic": "Alexandrovna",
+        "phones": [
+            {
+                "number": "82222222222",
+                "type": 1
+            }
+        ]
+    },
+    {
         "address": "spb",
         "birthDate": "02.03.2006",
         "email": "Maria@mail.ru",
@@ -21,34 +49,6 @@
             },
             {
                 "number": "+7(812)1234567",
-                "type": 2
-            }
-        ]
-    },
-    {
-        "address": "spb",
-        "birthDate": "03.07.2005",
-        "email": "Yanina@aaa.aa",
-        "firstName": "Yanina",
-        "lastName": "Savina",
-        "patronymic": "Alexandrovna",
-        "phones": [
-            {
-                "number": "82222222222",
-                "type": 1
-            }
-        ]
-    },
-    {
-        "address": "",
-        "birthDate": "",
-        "email": "ss@ss.ss",
-        "firstName": "ss",
-        "lastName": "ss",
-        "patronymic": "",
-        "phones": [
-            {
-                "number": "88888888888",
                 "type": 2
             }
         ]
