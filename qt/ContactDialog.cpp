@@ -274,30 +274,66 @@ void ContactDialog::accept()
         return;
     }
 
-    // Проверка, что email содержит имя
-    QString firstName = m_firstNameEdit->text().toLower();
-    QString email = m_emailEdit->text().toLower();
-    QString emailUser = email.split('@').first();
+    // Проверка имен через валидаторы
+    QString firstName = m_firstNameEdit->text().trimmed();
+    QString lastName = m_lastNameEdit->text().trimmed();
+    QString patronymic = m_patronymicEdit->text().trimmed();
 
-    if (!emailUser.contains(firstName))
+    if (!Validators::validate_name(firstName.toStdString()))
     {
         QMessageBox::warning(this, "Ошибка",
-            "Email должен содержать имя контакта\n"
-            "Пример: если имя 'ivan', то email может быть 'ivan@mail.com'");
+            "Неверный формат имени\n"
+            "Имя должно начинаться с буквы и содержать только буквы, цифры, пробелы и дефисы");
         return;
     }
 
-    // Проверка даты рождения
+    if (!Validators::validate_name(lastName.toStdString()))
+    {
+        QMessageBox::warning(this, "Ошибка",
+            "Неверный формат фамилии\n"
+            "Фамилия должна начинаться с буквы и содержать только буквы, цифры, пробелы и дефисы");
+        return;
+    }
+
+    if (!patronymic.isEmpty() && !Validators::validate_name(patronymic.toStdString()))
+    {
+        QMessageBox::warning(this, "Ошибка",
+            "Неверный формат отчества\n"
+            "Отчество должно начинаться с буквы и содержать только буквы, цифры, пробелы и дефисы");
+        return;
+    }
+
+    // Проверка email через валидатор (удаляем пробелы перед проверкой)
+    QString emailInput = m_emailEdit->text();
+    QString cleanEmail = emailInput;
+    cleanEmail = cleanEmail.remove(' '); // Удаляем все пробелы
+
+    if (!Validators::validate_email(cleanEmail.toStdString(), firstName.toStdString()))
+    {
+        QMessageBox::warning(this, "Ошибка",
+            "Неверный формат email\n"
+            "1. Email должен содержать имя контакта\n"
+            "2. Email должен быть в правильном формате: user@domain.com\n"
+            "Пример: если имя 'ivan', то email может быть 'ivan@mail.com'");
+
+        // Сохраняем очищенный email обратно в поле
+        m_emailEdit->setText(cleanEmail);
+        return;
+    }
+
+    // Сохраняем очищенный email обратно в поле
+    m_emailEdit->setText(cleanEmail);
+
+    // Проверка даты рождения через валидатор
     QString birthDate = m_birthDateEdit->text().trimmed();
     if (!birthDate.isEmpty())
     {
-        // Создаем временный контакт для валидации
-        Contact temp;
-        if (!temp.set_birthDate(birthDate.toStdString()))
+        if (!Validators::validate_birthDate(birthDate.toStdString()))
         {
             QMessageBox::warning(this, "Ошибка",
                 "Неверный формат даты рождения\n"
-                "Используйте формат ДД.ММ.ГГГГ");
+                "Используйте формат ДД.ММ.ГГГГ (например, 15.05.1990)\n"
+                "Дата должна быть реальной и не в будущем");
             return;
         }
     }
@@ -309,5 +345,27 @@ void ContactDialog::accept()
         return;
     }
 
+    // Проверка валидности всех телефонов
+    for (int i = 0; i < m_phonesList->count(); ++i)
+    {
+        QString itemText = m_phonesList->item(i)->text();
+        QStringList parts = itemText.split(" (");
+        if (parts.size() >= 2)
+        {
+            QString number = parts[0].trimmed();
+            if (!Validators::validate_phone(number.toStdString())) {
+                QMessageBox::warning(this, "Ошибка",
+                    QString("Неверный формат телефона: %1\n"
+                            "Допустимые форматы:\n"
+                            "• +7XXXXXXXXXX\n"
+                            "• 8XXXXXXXXXX\n"
+                            "• +7(XXX)XXXXXXX\n"
+                            "• +7(XXX)XXX-XX-XX").arg(number));
+                return;
+            }
+        }
+    }
+
+    // Если все проверки пройдены - закрываем диалог
     QDialog::accept();
 }

@@ -378,6 +378,18 @@ void QtPhoneBook::addContact()
     {
         Contact contact = dialog.getContact();
 
+        // Получаем контакт по email (если существует)
+        Contact existingContact = m_manager->getContact(contact.get_email());
+
+        // Если контакт с таким email уже существует
+        if (!existingContact.get_email().empty())
+        {
+            QMessageBox::warning(this, "Ошибка",
+                "Контакт с email '" + QString::fromStdString(contact.get_email()) +
+                "' уже существует!");
+            return; // Прерываем выполнение
+        }
+
         if (m_manager->addContact(contact))
         {
             loadContacts();
@@ -385,7 +397,8 @@ void QtPhoneBook::addContact()
         }
         else
         {
-            QMessageBox::warning(this, "Ошибка", "Не удалось добавить контакт. Возможно, email уже существует.");
+            QMessageBox::warning(this, "Ошибка",
+                "Не удалось добавить контакт. Возможно, email уже существует.");
         }
     }
 }
@@ -401,8 +414,8 @@ void QtPhoneBook::editContact()
         return;
     }
 
-    QString email = m_contactsTable->item(row, 3)->text();
-    Contact oldContact = m_manager->getContact(email.toStdString());
+    QString oldEmail = m_contactsTable->item(row, 3)->text();
+    Contact oldContact = m_manager->getContact(oldEmail.toStdString());
 
     ContactDialog dialog(this);
     dialog.setContact(oldContact);
@@ -411,8 +424,21 @@ void QtPhoneBook::editContact()
     if (dialog.exec() == QDialog::Accepted)
     {
         Contact newContact = dialog.getContact();
+        QString newEmail = QString::fromStdString(newContact.get_email());
 
-        if (m_manager->updateContact(email.toStdString(), newContact))
+        // если email изменился, проверяем его уникальность
+        if (oldEmail != newEmail)
+        {
+            Contact existingContact = m_manager->getContact(newEmail.toStdString());
+            if (!existingContact.get_email().empty())
+            {
+                QMessageBox::warning(this, "Ошибка",
+                    "Email '" + newEmail + "' уже используется другим контактом!");
+                return;
+            }
+        }
+
+        if (m_manager->updateContact(oldEmail.toStdString(), newContact))
         {
             loadContacts();
             QMessageBox::information(this, "Успех", "Контакт успешно обновлен");

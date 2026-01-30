@@ -1,6 +1,6 @@
 PHONEBOOK
 
-oopPhoneBookQt/
+oopPhoneBook/
 │
 ├── include/           # Все заголовочные файлы
 │   ├── Contact.h
@@ -11,7 +11,7 @@ oopPhoneBookQt/
 │   ├── UI.h
 │   └── IContactRepository.h
 │
-├── src/               # Все реализации (.cpp)
+├── source/               # Все реализации (.cpp)
 │   ├── Contact.cpp
 │   ├── PhoneNumber.cpp
 │   ├── Validators.cpp
@@ -29,9 +29,12 @@ oopPhoneBookQt/
 │   ├── QtPhoneBook.h
 │   └── QtPhoneBook.cpp
 │
+├── database/              # реализация базы данных
+│   ├── PostgreSQLRepository.cpp
+│   └── PostgreSQLRepository.h
+│
 ├── architecture.txt
 ├── CMakeLists.txt
-├── contacts.json
 │
 └── third_party/
     └── json.hpp
