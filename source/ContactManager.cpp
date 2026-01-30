@@ -1,4 +1,4 @@
-#include "ContactManager.h"
+#include "../include/ContactManager.h"
 #include <algorithm>
 
 ContactManager::ContactManager(IContactRepository* repo)
